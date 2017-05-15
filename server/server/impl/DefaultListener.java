@@ -56,7 +56,7 @@ public class DefaultListener implements IListener {
 					conn.setSocket(socket);
 				}
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-				Logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 			if(conn != null){
 				executor.execute(conn);

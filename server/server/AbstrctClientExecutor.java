@@ -52,8 +52,10 @@ public abstract class AbstrctClientExecutor implements Runnable {
 				obj = in.readObject();
 			} catch (ClassNotFoundException e) {
 				Logger.error(e.getMessage());
+				isRunning = false;
 			} catch (IOException e) {
 				Logger.error(e.getMessage());
+				isRunning = false;
 			}
         	Message msg = decode(obj);
         	if(msg != null){

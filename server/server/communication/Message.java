@@ -1,5 +1,6 @@
 package server.communication;
 
+
 import java.io.Serializable;
 
 import server.utils.BoardJavaGameServerConfig;
