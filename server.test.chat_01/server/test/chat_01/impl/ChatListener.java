@@ -7,7 +7,6 @@ import server.test.chat_01.heandlers.MessageHandler;
 
 public class ChatListener extends AbstrctClientExecutor {
 
-	private LoginHandler login;
 	private MessageHandler hand;
 	
 	@Override
@@ -24,7 +23,7 @@ public class ChatListener extends AbstrctClientExecutor {
 
 	@Override
 	public void setLogin() {
-		login = new LoginHandler();
+		this.login = new LoginHandler();
 	}
 
 }
