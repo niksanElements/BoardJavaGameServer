@@ -14,9 +14,13 @@ public class BoardJavaGameServerConfig {
 	
 							/* Message Types */
 	public enum MESSAGE_TYPES { 
-		MESSAGE,RESPONSE, LOGIN,CHAT_MESSAGE
+		MESSAGE,RESPONSE, LOGIN,CHAT_MESSAGE, BOARD_ACTION
 	}
 							/* Response Fiend Types */
 	public enum RESPONSE_TYPES {
+	}
+	
+	public static enum BoardAction{
+		ATTACK,SHOOT,MOVE, CURSE
 	}
 }
