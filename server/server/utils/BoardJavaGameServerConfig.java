@@ -12,10 +12,6 @@ public class BoardJavaGameServerConfig {
 	public static final int KEEP_ALIVE_TIME = 20;
 	public static final TimeUnit BASE_TIME_UNIT = TimeUnit.MINUTES;
 	
-							/* Message Types */
-	public enum MESSAGE_TYPES { 
-		MESSAGE,RESPONSE, LOGIN,CHAT_MESSAGE, BOARD_ACTION
-	}
 							/* Response Fiend Types */
 	public enum RESPONSE_TYPES {
 	}

@@ -1,12 +1,17 @@
 package server.communication;
 
-import server.utils.BoardJavaGameServerConfig.MESSAGE_TYPES;
 
 @SuppressWarnings("serial")
-public class Login extends Message {
-	public static final MESSAGE_TYPES TYPE = MESSAGE_TYPES.LOGIN;
+public final class Login extends Message {
+	
+	private final MESSAGE_TYPES type = MESSAGE_TYPES.LOGIN;
 	
 	private String name;
+	
+	public Login(int playerId, String name) {
+		super(playerId);
+		this.name = name;
+	}
 
 	public String getName() {
 		return name;
@@ -14,6 +19,11 @@ public class Login extends Message {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public MESSAGE_TYPES getType() {
+		return type;
 	}
 	
 }

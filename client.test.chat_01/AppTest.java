@@ -18,7 +18,7 @@ public class AppTest {
 	public AppTest(){
 		this.connectServer();
 		this.writeNames();
-		Login log = new Login();
+		Login log = new Login(0,"");
 		log.setName(user);
 		try {
 			out.writeObject(log);

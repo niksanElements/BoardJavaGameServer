@@ -5,5 +5,5 @@ import java.io.ObjectOutputStream;
 
 public interface ILoginHandler extends IHandler {
 	
-	public void handel(ObjectInputStream in,ObjectOutputStream out);
+	public void handel(ObjectInputStream in,ObjectOutputStream socket);
 }

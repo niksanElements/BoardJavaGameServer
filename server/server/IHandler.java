@@ -1,9 +1,9 @@
 package server;
 
-import server.communication.Message;
+import server.game.board_02.messages.Message;
 
 public interface IHandler {
-	
-	public void handel(Message msg,Boolean authorize);
+
+	public void handel(Message msg);
 	
 }

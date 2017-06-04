@@ -14,4 +14,9 @@ public final class Auth_Login extends Message {
         super(username, Message.MESSAGETYPE.AUTH_LOGIN);
         this.password = password;
     }
+    
+    @Override
+    public String toString() {
+    	return "Login: \n" + "username: "+username + "password: "+ password;
+    }
 }

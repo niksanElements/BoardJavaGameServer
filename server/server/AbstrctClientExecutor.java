@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import server.communication.Message;
+import server.game.board_02.messages.Message;
 import server.utils.Logger;
 
 public abstract class AbstrctClientExecutor implements Runnable {
@@ -51,17 +51,18 @@ public abstract class AbstrctClientExecutor implements Runnable {
 			try {
 				obj = in.readObject();
 			} catch (ClassNotFoundException e) {
-				Logger.error(e.getMessage());
+				System.out.println("Message Erorr!");
 				isRunning = false;
+				e.printStackTrace();
 			} catch (IOException e) {
-				Logger.error(e.getMessage());
+				System.out.println("Disconnect!");
 				isRunning = false;
+				e.printStackTrace();
 			}
         	Message msg = decode(obj);
         	if(msg != null){
-        		Boolean authorize = new Boolean(true);
 	        	for(IHandler h: handlers){
-	        		h.handel(msg,authorize);
+	        		h.handel(msg);
 	        	}
         	}
         }

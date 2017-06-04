@@ -1,7 +1,7 @@
 package server.test.chat_01.impl;
 
 import server.AbstrctClientExecutor;
-import server.communication.Message;
+import server.game.board_02.messages.Message;
 import server.test.chat_01.heandlers.LoginHandler;
 import server.test.chat_01.heandlers.MessageHandler;
 
