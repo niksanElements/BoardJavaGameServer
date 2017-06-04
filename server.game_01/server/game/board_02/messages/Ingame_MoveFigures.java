@@ -14,8 +14,18 @@ public final class Ingame_MoveFigures extends MessageIngame {
 
     public final ArrayList<BoardCoords> from;
     public final ArrayList<BoardCoords> to;
+    
+    /**
+	 * The actions are:
+	 * 1 - attack
+	 * 2 - shoot
+	 * 3 - move
+	 * 4 - curse
+	 */
+    public final ArrayList<Integer> actions;
 
-    public Ingame_MoveFigures(String username, int boardId, ArrayList<BoardCoords> from, ArrayList<BoardCoords> to) {
+    public Ingame_MoveFigures(String username, int boardId, ArrayList<BoardCoords> from, ArrayList<BoardCoords> to,
+    		ArrayList<Integer> actions) {
         super(username, Message.MESSAGETYPE.INGAME_MOVEFIGURES, boardId);
         this.from = new ArrayList<>();
         {
@@ -31,5 +41,17 @@ public final class Ingame_MoveFigures extends MessageIngame {
                 this.to.add(it.next());
             }
         }
+        this.actions = new ArrayList<>();
+        {
+            Iterator<Integer> it = actions.iterator();
+            while (it.hasNext()) {
+                this.actions.add(it.next());
+            }
+        }
+    }
+    
+    @Override
+    public String toString() {
+    	return "Move Figure: \n" + username;
     }
 }

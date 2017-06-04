@@ -1,24 +1,9 @@
 package server.game;
 
-import server.communication.Message;
-import server.game_01.impl.Cell;
+import server.game.board_02.messages.Message;
 
 public interface IPlayer {
 	
-	/**
-	 * A unique key representing a gamer. This could be an email id or something
-	 * unique.
-	 * 
-	 * @return Returns the unique key for the gamer.
-	 */
-	public int getId();
-
-	/**
-	 * A unique key representing a gamer. This could be an email id or something
-	 * unique.
-	 * 
-	 */
-	public void setId(int uniqueKey);
 
 	/**
 	 * Method used to get the name of the gamer.
@@ -104,5 +89,12 @@ public interface IPlayer {
 	 * @return
 	 */
 	public boolean setMessage(Message msg);
+	
+	/**
+	 * Sending message to the client 
+	 * representing this player.
+	 * @param msg
+	 */
+	public void sendMessage(Message msg);
 	
 }

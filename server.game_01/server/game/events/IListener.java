@@ -1,11 +1,11 @@
 package server.game.events;
 
-import server.communication.BoardAction;
+import server.game.board_02.messages.Ingame_MoveFigures;
 
 public interface IListener {
 	
 	public void handle(Object obj);
 
-	public boolean handle(BoardAction message);
+	public boolean handle(Ingame_MoveFigures message);
 	
 }

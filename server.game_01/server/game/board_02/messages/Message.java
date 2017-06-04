@@ -42,7 +42,10 @@ public abstract class Message implements java.io.Serializable {
         INGAME_MOVEFIGURES, // Ð¼ÐµÑ�Ñ‚ÐµÐ½Ðµ Ð½Ð° Ñ„Ð¸Ð³ÑƒÑ€Ð¸ (Ðš -> Ð¡ -> Ðš; Ð¡ -> Ðš)
         INGAME_REMOVEFIGURES, // Ð¿Ñ€ÐµÐ¼Ð°Ñ…Ð²Ð°Ð½Ðµ Ð½Ð° Ñ„Ð¸Ð³ÑƒÑ€Ð° Ð¾Ñ‚ Ð¸Ð³Ñ€Ð° (Ð¡ -> Ðš)
         INGAME_ENDTURN, // ÐºÑ€Ð°Ð¹ Ð½Ð° Ñ…Ð¾Ð´ (Ðš -> Ð¡ -> Ðš; Ð¡ -> Ðš)
-        INGAME_ENDGAME // ÐºÑ€Ð°Ð¹ Ð½Ð° Ð¸Ð³Ñ€Ð° (Ð¡ -> Ðš)
+        INGAME_ENDGAME, // ÐºÑ€Ð°Ð¹ Ð½Ð° Ð¸Ð³Ñ€Ð° (Ð¡ -> Ðš)
+        
+        ERROR,
+        SUCCESS
     }
 
     /**

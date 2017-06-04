@@ -1,6 +1,9 @@
 package server.game;
 
 import server.game.events.IListener;
+
+import java.util.ArrayList;
+
 import server.game.IGameEngine.Mode;
 import server.game.events.IDisconnect;
 
@@ -8,7 +11,7 @@ public abstract class AbstractGameRoom implements IListener, IDisconnect{
 	
 	protected IPlayer players[];
 	protected Status status;
-	protected IGameEngine.Mode mode;
+	protected int mode;
 	private int id;
 	
 	public AbstractGameRoom()
@@ -38,11 +41,11 @@ public abstract class AbstractGameRoom implements IListener, IDisconnect{
 		this.players = players;
 	}
 	
-	public void setMode(IGameEngine.Mode mode){
+	public void setMode(int mode){
 		this.mode = mode;
 	}
 	
-	public abstract void createGameRoom(IPlayer players[],Mode mode);
+	public abstract void createGameRoom(ArrayList<IPlayer> players,int mode);
 
 	public void setStatus(Status status){
 		this.status = status;

@@ -1,9 +1,14 @@
 package server.game_01.impl;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
 import server.communication.BoardAction;
-import server.communication.Message;
 import server.game.AbstractGameRoom;
 import server.game.IPlayer;
+import server.game.board_02.messages.Ingame_MoveFigures;
+import server.game.board_02.messages.Message;
 import server.game.events.IDisconnect;
 import server.game.events.IListener;
 
@@ -12,28 +17,16 @@ public class DefaultPlayer implements IPlayer {
 	private IListener listener;
 	private IDisconnect disconnect;
 	
-	private int id;
 	private String name;
 	private int emailId;
 	private boolean move;
 	
+	private Socket socket;
 	
-	public DefaultPlayer(int id,String name) {
-		this.id = id;
+	public DefaultPlayer(String name) {
 		this.name = name;
 		this.emailId = 0;
 		this.move = false;
-	}
-
-	@Override
-	public int getId() {
-		return this.id;
-	}
-
-	@Override
-	public void setId(int uniqueKey) {
-		id = uniqueKey;
-		
 	}
 
 	@Override
@@ -96,12 +89,23 @@ public class DefaultPlayer implements IPlayer {
 
 	@Override
 	public boolean setMessage(Message msg) {
-		boolean result = false;;
-		if(msg instanceof BoardAction){
-			result = this.listener.handle((BoardAction)msg);
+		boolean result = false;
+		
+		if(msg instanceof Ingame_MoveFigures){
+			result = this.listener.handle((Ingame_MoveFigures)msg);
 		}
 		
 		return result;
+	}
+
+	@Override
+	public void sendMessage(Message msg) {
+		try {
+			new ObjectOutputStream(this.socket.getOutputStream()).writeObject(msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

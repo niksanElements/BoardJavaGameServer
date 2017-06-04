@@ -1,10 +1,12 @@
 package server.game_01.impl;
 
-import server.communication.BoardAction;
+import java.util.ArrayList;
+
+import server.communication.MoveFigure;
 import server.game.AbstractGameRoom;
-import server.game.IGameEngine;
 import server.game.IGameEngine.Mode;
 import server.game.IPlayer;
+import server.game.board_02.messages.Ingame_MoveFigures;
 import server.game_01.impl.Board.Shape;
 
 public class DefaultBoardGameRoom extends AbstractGameRoom {
@@ -32,31 +34,43 @@ public class DefaultBoardGameRoom extends AbstractGameRoom {
 		// TODO close the game room
 		
 	}
+	
+	@Override
+	public void createGameRoom(ArrayList<IPlayer> players, int mode) {
+		// TODO setting the game in creating mode
+		
+	}
 
 	@Override
-	public boolean handle(BoardAction message) {
-		boolean result = false;
+	public boolean handle(Ingame_MoveFigures message) {
+		boolean result = true;
 		if(isTheMessageFromValidPlayer(message)){
-			switch (message.getType()) {
-			case ATTACK:
-				result = board.attack(message.getX(), message.getY(), 
-						message.getX1(), message.getY1());
-				break;
-			case MOVE:
-				result = board.move(message.getX(), message.getY(), 
-						message.getX1(), message.getY1());
-				break;
-			case SHOOT:
-				result = board.shoot(message.getX(), message.getY(), 
-						message.getX1(), message.getY1());
-				break;
-			case CURSE:
-				result = board.curse(message.getX(), message.getY(), 
-						message.getX1(), message.getY1());
-				break;
-			default:
-				result = false;
-				break;
+			if(message.actions.size() == message.from.size()&& 
+					message.from.size() == message.to.size())
+			{
+				for(int i = 0;i < message.to.size() && result == true;i++){
+					switch (message.actions.get(i)) {
+					case 1:
+						result = board.attack(message.from.get(i).x, message.from.get(i).y, 
+								message.to.get(i).x, message.to.get(i).y);
+						break;
+					case 3:
+						result = board.move(message.from.get(i).x, message.from.get(i).y, 
+								message.to.get(i).x, message.to.get(i).y);
+						break;
+					case 2:
+						result = board.shoot(message.from.get(i).x, message.from.get(i).y, 
+								message.to.get(i).x, message.to.get(i).y);
+						break;
+					case 4:
+						result = board.curse(message.from.get(i).x, message.from.get(i).y, 
+								message.to.get(i).x, message.to.get(i).y);
+						break;
+					default:
+						result = false;
+						break;
+					}
+				}
 			}
 			if(result){
 				currentPlayer = (currentPlayer + 1)% players.length;
@@ -65,12 +79,6 @@ public class DefaultBoardGameRoom extends AbstractGameRoom {
 		return result;
 	}
 
-	@Override
-	public void createGameRoom(IPlayer players[],IGameEngine mode) {
-		status = Status.CREATING;
-		// TODO Implement connection with the database for getting the figures attributes.
-		
-	}
 
 	@Override
 	public void handle(Object obj) {
@@ -78,16 +86,30 @@ public class DefaultBoardGameRoom extends AbstractGameRoom {
 	}
 	
 	// private
-	private boolean isTheMessageFromValidPlayer(BoardAction msg){
+	private boolean isTheMessageFromValidPlayer(Ingame_MoveFigures message){
 		boolean result = true;
 		if(players[currentPlayer].isMyMove()){
 			result = false;
 		}
-		if(result && players[currentPlayer].getId() != msg.getId()){
+		if(result && players[currentPlayer].getName().equals(message.username)){
 			result = false;
 		}
 			
 		return true;
+	}
+	/**
+	 * @param move is the message from certain player.
+	 * @return int from 1 to 4 to determine the board action wich
+	 * the player want's to perform.
+	 * 
+	 * 1 - attack
+	 * 2 - shoot
+	 * 3 - move
+	 * 4 - curse
+	 */
+	private int checkMoveFigure(MoveFigure move){
+		// to be implemented 
+		return 0;
 	}
 	
 }
