@@ -1,12 +1,11 @@
 package server.communication;
 
 import server.utils.BoardJavaGameServerConfig;
-import server.utils.BoardJavaGameServerConfig.MESSAGE_TYPES;
 
 @SuppressWarnings("serial")
 public class BoardAction extends Message { 
 	
-	public static final MESSAGE_TYPES TYPE = MESSAGE_TYPES.BOARD_ACTION;
+	//public static final MESSAGE_TYPES TYPE = MESSAGE_TYPES.BOARD_ACTION;
 	
 	private int x,y;
 	private int x1,y1;
@@ -15,10 +14,10 @@ public class BoardAction extends Message {
 	
 	
 	
-	public BoardAction(int x, int y, int x1, int y1, 
+	public BoardAction(int playerId ,int x, int y, int x1, int y1, 
 			BoardJavaGameServerConfig.BoardAction type,int id)
 	{
-		super();
+		super(playerId);
 		this.x = x;
 		this.y = y;
 		this.x1 = x1;
@@ -59,10 +58,13 @@ public class BoardAction extends Message {
 	public void setY1(int y1) {
 		this.y1 = y1;
 	}
-	public BoardJavaGameServerConfig.BoardAction getType() {
-		return type;
-	}
+	
 	public void setType(BoardJavaGameServerConfig.BoardAction type) {
 		this.type = type;
+	}
+
+	@Override
+	public MESSAGE_TYPES getType() {
+		return null;
 	}
 }
