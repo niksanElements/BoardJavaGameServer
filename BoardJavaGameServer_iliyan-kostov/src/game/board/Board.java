@@ -27,11 +27,11 @@ import protocol.interfaces.IMessageSender;
 public abstract class Board implements IMessageSender, IMessageHandler {
 
     public static final int SIZE_3 = 30; // брой редове на триъгълната дъска
-    public static final int SIZE_4 = 20; // брой редове на квадратната дъска
+    public static final int SIZE_4 = 4; // брой редове на квадратната дъска
     public static final int SIZE_6 = 80; // брой редове на шестоъгълната дъска
     
-    public static final int SIZE_2_WIDTH = 20;
-    public static final int SIZE_2_HIGHT = 12;
+    public static final int SIZE_2_WIDTH = 4;
+    public static final int SIZE_2_HIGHT = 4;
 
     /**
      * <p>
@@ -114,7 +114,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                 }
                 break;
                 case 4: {
-                    this.boardSizeRows = Board.SIZE_4 - 8;
+                    this.boardSizeRows = Board.SIZE_4 ;
                     this.boardSizeCols = Board.SIZE_4;
                 }
                 break;
@@ -157,7 +157,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = 0;
                         int col = i;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -169,7 +169,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = this.boardSizeRows - 1;
                         int col = j;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -184,7 +184,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = i;
                         int col = 0;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -196,7 +196,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = this.boardSizeRows - 1;
                         int col = 2 * j;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -208,7 +208,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = i;
                         int col = 2 * i;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -223,7 +223,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = i;
                         int col = 0;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -235,7 +235,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = this.boardSizeRows - 1;
                         int col = j;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -247,7 +247,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = i;
                         int col = this.boardSizeCols - 1;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -259,7 +259,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = 0;
                         int col = j;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -275,7 +275,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = i;
                         int col = 0;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -288,7 +288,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = i;
                         int col = 0;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -301,7 +301,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = this.boardSizeRows - 1;
                         int col = j;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -315,7 +315,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = i;
                         int col = coef - i;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -328,7 +328,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = i;
                         int col = i + sideLength - 1;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }
@@ -341,7 +341,7 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                         int row = 0;
                         int col = j;
                         this.boardFigures[row][col] = new Figure(new BoardCoords(row, col), playerName,
-                        		new ImagePattern(this.imgLoad.takeImage()),"Figure");
+                        		new ImagePattern(this.imgLoad.takeImage(playerId)),"Figure");
                         this.playerFigures.get(playerName).add(this.boardFigures[row][col]);
                     }
                 }

@@ -4,14 +4,25 @@ import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeType;
 import protocol.Message_Board_MoveFigures;
 
 public class Board_Clientside_Cell extends Polygon {
 
+	/*
     // цветове за различните играчи:
-    public static final Color[] COLOR_PLAYERS = {Color.CRIMSON, Color.DARKORANGE, Color.DARKVIOLET, Color.FORESTGREEN, Color.MAGENTA, Color.MEDIUMBLUE};
+    public static final ImagePattern[] COLOR_PLAYERS = 
+    	{
+    			Color.CRIMSON, 
+    			Color.DARKORANGE, 
+    			Color.DARKVIOLET, 
+    			Color.FORESTGREEN, 
+    			Color.MAGENTA, 
+    			Color.MEDIUMBLUE
+		};
+	*/
     // цвят за дъската:
     public static final Color COLOR_BOARD = Color.LIGHTGOLDENRODYELLOW;
     // цвят на мрежата:

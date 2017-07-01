@@ -10,28 +10,30 @@ public class ImageLoader {
 	
 	public static final String SOURCE = System.getProperty("user.dir")+"/resources/img/";
 	
-	private LinkedList<File> files;
+	private File files[];
 	
 	public ImageLoader(){
-		files = new LinkedList<>();
+		this.files = new File[6];
 		final File folder = new File(SOURCE);
 		listFilesForFolder(folder);
 	}
 
-	public Image takeImage() {
-		Random rand = new Random();
-		String name = files.get(rand.nextInt(files.size())).getName();
+	public Image takeImage(int i) {
+		String name = files[i].getName();
 		System.out.println(SOURCE+name);
 		Image img = new Image("file:"+SOURCE+name);
 		return img;
 	}
 	
 	private void listFilesForFolder(final File folder) {
+		int i = 0;
 	    for (final File fileEntry : folder.listFiles()) {
-	        if (fileEntry.isDirectory()) {
-	            listFilesForFolder(fileEntry);
-	        } else {
-	        	this.files.add(fileEntry);
+	        if (!fileEntry.isDirectory()) {
+	        	this.files[i++] = fileEntry;
+	        	
+	        	if(i == 6){
+	        		break;
+	        	}
 	        }
 	    }
 	}

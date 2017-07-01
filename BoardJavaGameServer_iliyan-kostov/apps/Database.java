@@ -13,8 +13,7 @@ import java.util.logging.Logger;
 
 public class Database {
 
-    public final static String CONNECTIONSTRING = "jdbc:ucanaccess:////"+
-    System.getProperty("user.dir")+"/database/BoardJavaGameServer.accdb";
+    public final static String CONNECTIONSTRING = "jdbc:ucanaccess:////D://Coding//Java//BoardJavaGameServer//database//BoardJavaGameServer.accdb";
 
     private final String connectionString;
 

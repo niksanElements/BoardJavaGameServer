@@ -95,5 +95,15 @@ public class HomeController implements Initializable ,PropertyChangeListener{
 		this.user = user;
 		
 	}
+
+	public UserController getUser() {
+		return user;
+	}
+
+	public void setUser(UserController user) {
+		this.user = user;
+	}
+	
+	
 	
 }

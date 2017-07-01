@@ -35,7 +35,7 @@ public class LoginController
 	private static final String HOST = "127.0.0.1";
 	private static final int PORT = 9000;
 	
-	private BoardController client;
+	private NetClient client;
 	private Stage stage;
 	
 	
@@ -79,8 +79,8 @@ public class LoginController
 		            try {
 		                Socket socket = new Socket(hostname, port);
 		                {
-		                    this.client = new BoardController(socket, username, password);
-		                    this.client.addPropertyChangeListener(this.client);
+		                    this.client = new NetClient(socket, username, password);
+		                    this.client.addPropertyChangeListener(this.home);
 		                    this.client.startConnection();
 		                    this.home.getChatController().setClient(client);
 		                    this.client.setChatController(this.home.getChatController());
@@ -96,18 +96,17 @@ public class LoginController
 		        	   //this.root.getChildren().get(0).setVisible(false);
 		        	   this.root.getChildren().remove(0);
 		        	   BorderPane borderPane = (BorderPane)this.root.getChildren().get(0);
-		        	   VBox box = new VBox();
-		        	   box.setAlignment(Pos.CENTER);
-		        	   box.getChildren().add(this.client.getBoardView());
+		        	   VBox box = this.client.vBox;
 		        	   BorderPane.setAlignment(box, Pos.CENTER);
 		        	   Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
-		        	   //box.setPrefSize((3*visualBounds.getWidth())/4, (3*visualBounds.getHeight())/4);
+		        	   box.setPrefSize((3*visualBounds.getWidth())/4, (3*visualBounds.getHeight())/4);
 		        	   box.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		        	   borderPane.setCenter(box);
 		        	   BorderPane homeController = (BorderPane)this.root.getChildren().get(0);
 		        	   homeController.setVisible(true);
 		        	   this.stage.setFullScreen(true);
 		        	   this.home.getChatController().setUsername(username);
+		        	   this.home.getUser().setClient(this.client);
 		           }
 		           else{
 		        	   	Alert message = new Alert(Alert.AlertType.INFORMATION);

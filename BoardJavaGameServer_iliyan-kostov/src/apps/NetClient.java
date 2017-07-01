@@ -7,7 +7,12 @@ import java.beans.PropertyChangeSupport;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import protocol.Message;
 import protocol.Message_Board_GameStarted;
 import protocol.interfaces.IMessageHandler;
@@ -27,6 +32,8 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
     // visual:
     protected Board_Clientside board;
     protected ChatController chatController;
+    
+    public final VBox vBox;
 
     public Group getBoardView() {
         return this.board.getBoardView();
@@ -34,11 +41,15 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
 
     public NetClient(Socket socket, String username, String password) {
         this.pcs = new PropertyChangeSupport(this);
+        this.vBox = new VBox();
+        this.vBox.setAlignment(Pos.CENTER);
+        this.vBox.getChildren().add(new Label("Game Board!!!"));
         this.socket = socket;
         this.username = username;
         this.password = password;
         this.connection = null;
         this.board = null;
+        //this.board = new Board_Clientside(4, 1, new String[]{"s","b","c","d"}, this);
     }
 
     public synchronized void startConnection() {
@@ -90,6 +101,10 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
                 try {
                     Message_Board_GameStarted msg = (Message_Board_GameStarted) message;
                     switch (msg.boardShape) {
+	                    case 2:{
+	                    	this.board = new Board_Clientside(msg.boardShape, msg.boardId, msg.playerNames, this);
+	                    }
+	                    break;
                         case 3: {
                             this.board = new Board_Clientside(msg.boardShape, msg.boardId, msg.playerNames, this);
                         }
@@ -106,6 +121,15 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
                             throw new IllegalArgumentException();
                         }
                     }
+                    Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+		                    vBox.getChildren().clear();
+		                    vBox.getChildren().add(getBoardView());
+						}
+					});
                     this.board.handleMessage(message);
                     this.pcs.firePropertyChange(NetClient.EVENT_GAME_STARTED, false, true);
                 } catch (ClassCastException ex) {
@@ -139,7 +163,9 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
         }
         
     }
-
+    
+    
+    
 	public ChatController getChatController() {
 		return chatController;
 	}

@@ -20,12 +20,12 @@
             <Insets left="10.0" />
          </FlowPane.margin>
       </Label>
-      <ChoiceBox prefWidth="150.0">
+      <ChoiceBox fx:id="gameSelect" prefWidth="150.0">
          <FlowPane.margin>
             <Insets left="20.0" />
          </FlowPane.margin>
       </ChoiceBox>
-      <Button mnemonicParsing="false" text="PLAY">
+      <Button mnemonicParsing="false" onAction="#onPlay" text="PLAY">
          <FlowPane.margin>
             <Insets left="20.0" />
          </FlowPane.margin>

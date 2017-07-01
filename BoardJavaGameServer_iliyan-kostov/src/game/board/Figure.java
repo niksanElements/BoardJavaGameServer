@@ -17,6 +17,16 @@ public class Figure {
     public BoardCoords boardCoords;
 
     /**
+     * брой разрешени премествания на фигура в рамките на един ход
+     */
+    public static final int MOVESMAX = 1;
+
+    /**
+     * брой извършени премествания в рамките на текущия ход
+     */
+    public int movesDone;
+
+    /**
      * собственик на фигурата
      */
     public final String username;
@@ -29,6 +39,7 @@ public class Figure {
         this.username = username;
         this.imagePattern = imagePattern;
         this.t= new Tooltip(t);
+	        this.movesDone = 0;
     }
 
 	public Paint getImagePattern() {
@@ -38,4 +49,22 @@ public class Figure {
 	public Tooltip getTooltip(){
 		return this.t;
 	}
+    public final boolean canMove() {
+        return (this.movesDone < Figure.MOVESMAX);
+    }
+
+    /**
+     * Рестартира брояча на извършени премествания за фигурата.
+     */
+    public final synchronized void movesReset() {
+        this.movesDone = 0;
+    }
+
+    /**
+     * Увеличава броя извършени премествания в рамките на хода.
+     */
+    public final synchronized void movesMake() {
+        this.movesDone++;
+    }
+
 }

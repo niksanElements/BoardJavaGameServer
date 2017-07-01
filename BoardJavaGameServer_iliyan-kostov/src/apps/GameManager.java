@@ -39,7 +39,7 @@ public class GameManager implements PropertyChangeListener, IMessageSender, IMes
         this.queueByMode.put(6, new LinkedList<>());
         
         this.queueByUser = new HashMap<>();
-        this.nextBoardId = 1;
+	this.nextBoardId = this.server.database.getMaxBoardId() + 1;
     }
 
     public synchronized void queueRemoveUser(String username) {
