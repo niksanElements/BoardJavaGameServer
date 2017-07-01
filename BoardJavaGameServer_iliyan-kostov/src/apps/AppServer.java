@@ -38,7 +38,7 @@ public class AppServer extends Application implements PropertyChangeListener {
         this.lblStatus = new Label("Server status");
         this.root = new VBox();
         
-        this.tfPort.setText("500");
+        this.tfPort.setText("9000");
 
         this.btnStartServer.setOnAction((ActionEvent event) -> {
             startServer();

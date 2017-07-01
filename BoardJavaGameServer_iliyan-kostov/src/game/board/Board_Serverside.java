@@ -29,6 +29,10 @@ public class Board_Serverside extends Board {
         this.gameManager = gameManager;
         this.server = server;
         switch (this.boardShape) {
+        	case 2:{
+        		this.gameLogic = new GameLogic_2(this, this.gameManager);
+        	}
+        	break;
             case 3: {
                 this.gameLogic = new GameLogic_3(this, this.gameManager);
             }

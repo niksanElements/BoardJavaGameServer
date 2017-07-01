@@ -24,6 +24,7 @@ public class NetServer implements IMessageSender, IMessageHandler {
     private final PropertyChangeSupport pcs;
     public final Database database;
     private final GameManager gameManager;
+    private final ChatManager chatManager;
 
     private int port;
     protected ServerSocket serverSocket;
@@ -38,6 +39,7 @@ public class NetServer implements IMessageSender, IMessageHandler {
         this.pcs = new PropertyChangeSupport(this);
         this.database = new Database(null); // set string of leave null for default !!!
         this.gameManager = new GameManager(this);
+        this.chatManager = new ChatManager(this);
         this.port = -1;
         this.serverSocket = null;
         this.acceptingThread = null;
@@ -170,6 +172,7 @@ public class NetServer implements IMessageSender, IMessageHandler {
             if (connection.username != null) {
                 this.connectionsByUsername.remove(connection.username);
                 this.userLogout(connection.username);
+                this.chatManager.addUser(connection.username);
             }
             this.pcs.firePropertyChange(NetServer.EVENT_CONNECTION_STOPPED, null, connection);
         }
@@ -251,6 +254,9 @@ public class NetServer implements IMessageSender, IMessageHandler {
             break;
             case LOBBY_RANKING: {
                 // TODO
+            }
+            case CHAT_MESSAGE:{
+            	this.chatManager.handleMessage(message);
             }
             break;
             default: {

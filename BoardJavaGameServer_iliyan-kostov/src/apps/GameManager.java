@@ -32,9 +32,12 @@ public class GameManager implements PropertyChangeListener, IMessageSender, IMes
         this.boardsById = new HashMap<>();
         this.boardsByUsername = new HashMap<>();
         this.queueByMode = new HashMap<>();
+        
+        this.queueByMode.put(2, new LinkedList<>());
         this.queueByMode.put(3, new LinkedList<>());
         this.queueByMode.put(4, new LinkedList<>());
         this.queueByMode.put(6, new LinkedList<>());
+        
         this.queueByUser = new HashMap<>();
         this.nextBoardId = 1;
     }
@@ -50,7 +53,7 @@ public class GameManager implements PropertyChangeListener, IMessageSender, IMes
 
     public synchronized void queueAddUser(String username, int boardShape) {
         if (this.boardsByUsername.get(username) == null) {
-            if ((boardShape == 3) || (boardShape == 4) || (boardShape == 6)) {
+            if ((boardShape == 2) || (boardShape == 3) || (boardShape == 4) || (boardShape == 6)) {
                 // remove user from current queue:
                 this.queueRemoveUser(username);
                 // queue user for the new mode:

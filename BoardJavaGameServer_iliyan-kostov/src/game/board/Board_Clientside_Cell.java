@@ -38,6 +38,12 @@ public class Board_Clientside_Cell extends Polygon {
                 Board_Clientside_Cell.SIDE_4 * 0.500, -Board_Clientside_Cell.SIDE_4 * 0.500,
                 -Board_Clientside_Cell.SIDE_4 * 0.500, -Board_Clientside_Cell.SIDE_4 * 0.500
             };
+    public static final double[] COORDS_2
+    = {-Board_Clientside_Cell.SIDE_4 * 0.500, Board_Clientside_Cell.SIDE_4 * 0.500,
+        Board_Clientside_Cell.SIDE_4 * 0.500, Board_Clientside_Cell.SIDE_4 * 0.500,
+        Board_Clientside_Cell.SIDE_4 * 0.500, -Board_Clientside_Cell.SIDE_4 * 0.500,
+        -Board_Clientside_Cell.SIDE_4 * 0.500, -Board_Clientside_Cell.SIDE_4 * 0.500
+    };
     // координати на върховете на шестоъгълника
     public static final double[] COORDS_6
             = {-Board_Clientside_Cell.SIDE_6 * 0.866, Board_Clientside_Cell.SIDE_6 * 0.500,
@@ -55,7 +61,7 @@ public class Board_Clientside_Cell extends Polygon {
 
     public Board_Clientside_Cell(int rowId, int colId, Board_Clientside board) {
         // генерира се полигон със съответната форма и координати на върховете:
-        super((board.boardShape == 3) ? (COORDS_3) : ((board.boardShape == 4) ? (COORDS_4) : (COORDS_6)));
+        super((board.boardShape == 3) ? (COORDS_3) : ((board.boardShape == 4) ? (COORDS_4) : (board.boardShape == 2) ? COORDS_2 : (COORDS_6)));
         this.setFill(Board_Clientside_Cell.COLOR_BOARD);
         this.setStrokeType(StrokeType.INSIDE);
         this.setStrokeWidth(Board_Clientside_Cell.GRID_WIDTH);
@@ -70,19 +76,30 @@ public class Board_Clientside_Cell extends Polygon {
                 if (board.from == null) {
                     if (board.boardFigures[rowId][colId] != null) {
                         board.from = new BoardCoords(rowId, colId);
+                		colorCell(Color.RED,4, board.from);
                     }
                 } else {
                     board.to = new BoardCoords(rowId, colId);
                     ArrayList<BoardCoords> from = new ArrayList<>();
                     ArrayList<BoardCoords> to = new ArrayList<>();
                     from.add(board.from);
+                    colorCell(Color.RED,4, board.to);
                     to.add(board.to);
                     board.sendMessage(new Message_Board_MoveFigures(null, board.boardId, from, to));
+                    
+                    colorCell(Color.BLACK,1, board.from);
+                    colorCell(Color.BLACK,1, board.to);
                     board.from = null;
                     board.to = null;
                 }
                 //JOptionPane.showMessageDialog(null, "row: " + rowId + ", col: " + colId);
             }
         });
+    }
+    
+	public void colorCell(Color color,int width, BoardCoords coard){
+	    	Board_Clientside_Cell cell = this.board.getCell(coard);
+	    	cell.setStroke(color);
+	    	cell.setStrokeWidth(width);
     }
 }

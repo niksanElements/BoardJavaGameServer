@@ -8,7 +8,7 @@ public class AppMain {
 	public static final String PATH_EXECUTOR = "server.test.chat_01.impl.ChatListener";
 	
 	public static void main(String[] args) {
-		Server server = new Server(9000);
+		Server server = new Server(6000);
 		DefaultListener listener = new DefaultListener();
 		listener.setClientExecutorName(PATH_EXECUTOR);
 		server.setListener(listener);

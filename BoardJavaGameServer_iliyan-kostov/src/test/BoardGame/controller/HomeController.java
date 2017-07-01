@@ -8,13 +8,18 @@ import java.util.ResourceBundle;
 
 import apps.NetClient;
 import apps.NetClientsideConnection;
+import game.board.Board_Clientside;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 
-public class HomeController implements Initializable ,PropertyChangeListener {
+public class HomeController implements Initializable ,PropertyChangeListener{
+	
+	private Board_Clientside board;
+	private ChatController chat;
+	private UserController user;
 	
 	public HomeController(){
 	}
@@ -66,6 +71,14 @@ public class HomeController implements Initializable ,PropertyChangeListener {
 		 }
 		
 	}
+	
+	public void setChatControl(ChatController chat){
+		this.chat = chat;
+	}
+	
+	public ChatController getChatController(){
+		return this.chat;
+	}
 
 	private void setRunning() {
 		// TODO Auto-generated method stub
@@ -77,7 +90,10 @@ public class HomeController implements Initializable ,PropertyChangeListener {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
 
+	public void setUserControl(UserController user) {
+		this.user = user;
+		
+	}
+	
 }

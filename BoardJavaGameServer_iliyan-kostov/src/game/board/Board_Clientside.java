@@ -6,7 +6,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.control.Tooltip;
+import javafx.scene.paint.ImagePattern;
 import protocol.Message;
 import protocol.Message_Board_EndGame;
 import protocol.Message_Board_EndTurn;
@@ -25,12 +28,14 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
     public final Board_Clientside_Cell[][] boardCells;
     public BoardCoords from;
     public BoardCoords to;
+    public ImageLoader imgLoader;
 
     public Board_Clientside(int boardShape, int boardId, String[] usernames, NetClient client) {
         super(boardShape, boardId, usernames);
         this.client = client;
         this.boardView = new Group();
         this.boardCells = new Board_Clientside_Cell[this.boardSizeRows][this.boardSizeCols];
+        this.imgLoader = new ImageLoader();
         for (int i = 0; i < this.boardSizeRows; i++) {
             for (int j = 0; j < this.boardSizeCols; j++) {
                 this.boardCells[i][j] = new Board_Clientside_Cell(i, j, this);
@@ -40,6 +45,17 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
         this.to = null;
         // поставяне на клетките от дъската по местата им:
         switch (boardShape) {
+        	case 2:{
+        		for (int i = 0; i < this.boardSizeRows; i++) {
+                    for (int j = 0; j < this.boardSizeCols; j++) {
+                        this.boardView.getChildren().add(this.boardCells[i][j]);
+                        //this.boardCells[i][j].setRotate(0.);
+                        this.boardCells[i][j].setTranslateX(j * Board_Clientside_Cell.SIDE_4);
+                        this.boardCells[i][j].setTranslateY(i * Board_Clientside_Cell.SIDE_4);
+                    }
+                }
+        	}
+        	break;
             case 3: {
                 for (int i = 0; i < this.boardSizeRows; i++) {
                     for (int j = 0; j < this.boardSizeCols; j++) {
@@ -109,7 +125,8 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
                 Iterator<Figure> it = figures.iterator();
                 while (it.hasNext()) {
                     Figure f = it.next();
-                    this.boardCells[f.boardCoords.row][f.boardCoords.col].setFill(Board_Clientside_Cell.COLOR_PLAYERS[playerId]);
+                    this.boardCells[f.boardCoords.row][f.boardCoords.col].setFill(f.getImagePattern());
+                    Tooltip.install(this.boardCells[f.boardCoords.row][f.boardCoords.col],f.getTooltip());
                 }
             }
         }
@@ -149,7 +166,11 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
                                 playerId++;
                             }
                             boardCells[c1.row][c1.col].setFill(Board_Clientside_Cell.COLOR_BOARD);
-                            boardCells[c2.row][c2.col].setFill(Board_Clientside_Cell.COLOR_PLAYERS[playerId]);
+                            boardCells[c2.row][c2.col].setFill(boardFigures[c1.row][c1.col].getImagePattern());
+                            
+                            Tooltip.uninstall(boardCells[c1.row][c1.col],boardFigures[c1.row][c1.col].getTooltip());
+                            Tooltip.install( boardCells[c2.row][c2.col], boardFigures[c1.row][c1.col].getTooltip());
+                            
                             boardFigures[c2.row][c2.col] = boardFigures[c1.row][c1.col];
                             boardFigures[c1.row][c1.col] = null;
                         }
@@ -195,4 +216,16 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
     public synchronized void sendMessage(Message message) {
         this.client.sendMessage(message);
     }
+
+	public NetClient getClient() {
+		return client;
+	}
+
+	public Board_Clientside_Cell getCell(BoardCoords coard) {
+		return this.boardCells[coard.row][coard.col];
+		
+	}
+    
+    
+    
 }

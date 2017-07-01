@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class Database {
 
-    public final static String CONNECTIONSTRING = "jdbc:ucanaccess:////E://JavaGames//BoardJavaGameServer_iliyan-kostov//database//BoardJavaGameServer.accdb";
+    public final static String CONNECTIONSTRING = "jdbc:ucanaccess://///home/nikolay//worckspace//java//BoardJavaGameServer//BoardJavaGameServer_iliyan-kostov///database//BoardJavaGameServer.accdb";
 
     private final String connectionString;
 

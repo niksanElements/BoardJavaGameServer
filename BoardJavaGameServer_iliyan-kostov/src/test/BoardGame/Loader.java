@@ -27,7 +27,7 @@ public class Loader{
 		loader = new FXMLLoader();
 		
 		// Load fxml file
-        String fxmlDocPath = path+"\\resources\\"+file;
+        String fxmlDocPath = path+"/resources/"+file;
         
         FileInputStream fxmlStream;
 		try {

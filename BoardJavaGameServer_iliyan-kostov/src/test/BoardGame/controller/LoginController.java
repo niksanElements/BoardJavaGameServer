@@ -12,23 +12,32 @@ import apps.NetClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import server.game_01.impl.Board;
 
 public class LoginController
 	implements Initializable {
 	
 	public Group root;
 	
+	public HomeController home;
+	
 	private static final String HOST = "127.0.0.1";
-	private static final int PORT = 500;
+	private static final int PORT = 9000;
 	
-	private NetClient client;
+	private BoardController client;
+	private Stage stage;
 	
-	public HomeController homeController;
 	
 	@FXML
 	private TextField usernameTextField;
@@ -70,10 +79,11 @@ public class LoginController
 		            try {
 		                Socket socket = new Socket(hostname, port);
 		                {
-		                    this.client = new NetClient(socket, username, password);
-		                    this.client.addPropertyChangeListener(homeController);
+		                    this.client = new BoardController(socket, username, password);
+		                    this.client.addPropertyChangeListener(this.client);
 		                    this.client.startConnection();
-		                    
+		                    this.home.getChatController().setClient(client);
+		                    this.client.setChatController(this.home.getChatController());
 		                    isReady = true;
 		                }
 		            } catch (IOException ex) {
@@ -85,6 +95,19 @@ public class LoginController
 		           if(isReady && this.root != null){
 		        	   //this.root.getChildren().get(0).setVisible(false);
 		        	   this.root.getChildren().remove(0);
+		        	   BorderPane borderPane = (BorderPane)this.root.getChildren().get(0);
+		        	   VBox box = new VBox();
+		        	   box.setAlignment(Pos.CENTER);
+		        	   box.getChildren().add(this.client.getBoardView());
+		        	   BorderPane.setAlignment(box, Pos.CENTER);
+		        	   Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
+		        	   //box.setPrefSize((3*visualBounds.getWidth())/4, (3*visualBounds.getHeight())/4);
+		        	   box.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		        	   borderPane.setCenter(box);
+		        	   BorderPane homeController = (BorderPane)this.root.getChildren().get(0);
+		        	   homeController.setVisible(true);
+		        	   this.stage.setFullScreen(true);
+		        	   this.home.getChatController().setUsername(username);
 		           }
 		           else{
 		        	   	Alert message = new Alert(Alert.AlertType.INFORMATION);
@@ -117,6 +140,22 @@ public class LoginController
 
 	public void setRoot(Group root) {
 		this.root = root;
+	}
+
+	public HomeController getHome() {
+		return home;
+	}
+
+	public void setHome(HomeController home) {
+		this.home = home;
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 	
 	

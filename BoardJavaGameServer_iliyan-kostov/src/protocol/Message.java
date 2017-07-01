@@ -45,7 +45,8 @@ public abstract class Message implements java.io.Serializable {
         BOARD_REMOVEFIGURES, // премахване на фигура от игра (С -> К)
         BOARD_ENDTURN, // край на ход (К -> С -> К; С -> К)
         BOARD_ENDGAME, // край на игра (С -> К)
-        BOARD_SURRENDER // играчът се предава (К -> С -> К)
+        BOARD_SURRENDER, // играчът се предава (К -> С -> К)
+        CHAT_MESSAGE // chat message (client -> server -> client)
     }
 
     /**

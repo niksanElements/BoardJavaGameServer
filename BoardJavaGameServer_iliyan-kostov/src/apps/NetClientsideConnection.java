@@ -57,8 +57,6 @@ public class NetClientsideConnection extends Thread implements IMessageSender, I
             // authenticate:
             this.sendMessage(new Message_Auth_Login(this.username, this.password));
             {
-                // ТЕСТ - автоматично заявяване на искане за игра - 4 души:
-                this.sendMessage(new Message_Lobby_NewGameRequest(this.username, 4, 0));
             }
             // loop:
             boolean keepRunning = true;

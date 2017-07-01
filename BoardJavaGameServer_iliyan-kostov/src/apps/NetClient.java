@@ -12,19 +12,21 @@ import protocol.Message;
 import protocol.Message_Board_GameStarted;
 import protocol.interfaces.IMessageHandler;
 import protocol.interfaces.IMessageSender;
+import test.BoardGame.controller.ChatController;
 
 public class NetClient implements IMessageSender, IMessageHandler, PropertyChangeListener {
 
     public static final String EVENT_GAME_STARTED = "gameStarted";
 
-    private final PropertyChangeSupport pcs;
+    public final PropertyChangeSupport pcs;
 
-    private final Socket socket;
-    private final String username;
-    private final String password;
-    private NetClientsideConnection connection;
+    protected final Socket socket;
+    protected final String username;
+    protected final String password;
+    protected NetClientsideConnection connection;
     // visual:
-    private Board_Clientside board;
+    protected Board_Clientside board;
+    protected ChatController chatController;
 
     public Group getBoardView() {
         return this.board.getBoardView();
@@ -73,7 +75,7 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        this.pcs.firePropertyChange(evt);
+        //this.pcs.firePropertyChange(evt);
     }
 
     @Override
@@ -127,9 +129,22 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
                 this.board.handleMessage(message);
             }
             break;
+            case CHAT_MESSAGE:{
+            	this.chatController.hendaleMessage(message);
+            }
+            break;
             default: {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         }
+        
     }
+
+	public ChatController getChatController() {
+		return chatController;
+	}
+
+	public void setChatController(ChatController chatController) {
+		this.chatController = chatController;
+	}
 }

@@ -2,7 +2,6 @@ package server.game_01.impl;
 
 import java.util.ArrayList;
 
-import server.communication.MoveFigure;
 import server.game.AbstractGameRoom;
 import server.game.IGameEngine.Mode;
 import server.game.IPlayer;
@@ -107,9 +106,5 @@ public class DefaultBoardGameRoom extends AbstractGameRoom {
 	 * 3 - move
 	 * 4 - curse
 	 */
-	private int checkMoveFigure(MoveFigure move){
-		// to be implemented 
-		return 0;
-	}
 	
 }

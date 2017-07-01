@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import server.communication.BoardAction;
 import server.game.AbstractGameRoom;
 import server.game.IPlayer;
 import server.game.board_02.messages.Ingame_MoveFigures;
