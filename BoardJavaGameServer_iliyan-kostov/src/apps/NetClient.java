@@ -1,6 +1,8 @@
 package apps;
 
 import game.board.Board_Clientside;
+import game.board.ImageLoader;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -18,6 +20,7 @@ import protocol.Message_Board_GameStarted;
 import protocol.interfaces.IMessageHandler;
 import protocol.interfaces.IMessageSender;
 import test.BoardGame.controller.ChatController;
+import test.BoardGame.controller.UserController;
 
 public class NetClient implements IMessageSender, IMessageHandler, PropertyChangeListener {
 
@@ -31,7 +34,8 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
     protected NetClientsideConnection connection;
     // visual:
     protected Board_Clientside board;
-    protected ChatController chatController;
+    protected ChatController chat;
+    protected UserController userControl;
     
     public final VBox vBox;
 
@@ -130,6 +134,19 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
 		                    vBox.getChildren().add(getBoardView());
 						}
 					});
+                    ImageLoader loader = new ImageLoader();
+                    int index = 0;
+                    for(String username: msg.playerNames){
+                    	if(username.equals(this.username)){
+                    		break;
+                    	}
+                    	index++;
+                    }
+                    this.userControl.setImage(loader.takeImage(index));
+                    this.chat.setChatCommunication(true);
+                    this.board.setChat(chat);
+                    this.board.usercontrol = this.userControl;
+                    this.chat.setBoardId(this.board.boardId);
                     this.board.handleMessage(message);
                     this.pcs.firePropertyChange(NetClient.EVENT_GAME_STARTED, false, true);
                 } catch (ClassCastException ex) {
@@ -147,6 +164,10 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
             break;
             case BOARD_ENDGAME: {
                 this.board.handleMessage(message);
+                this.userControl.setPlay(true);
+                this.chat.setChatCommunication(false);
+                this.board.setChat(null);
+                this.userControl.isMyTurn(false);
             }
             break;
             case BOARD_SURRENDER: {
@@ -154,23 +175,31 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
             }
             break;
             case CHAT_MESSAGE:{
-            	this.chatController.hendaleMessage(message);
+            	this.board.handleMessage(message);
             }
             break;
             default: {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
-        }
-        
+        }   
     }
-    
-    
-    
-	public ChatController getChatController() {
-		return chatController;
+
+	public ChatController getChat() {
+		return chat;
 	}
 
-	public void setChatController(ChatController chatController) {
-		this.chatController = chatController;
+	public void setChat(ChatController chat) {
+		this.chat = chat;
 	}
+
+	public UserController getUserControl() {
+		return userControl;
+	}
+
+	public void setUserControl(UserController userControl) {
+		this.userControl = userControl;
+	}
+	
+	
+    
 }

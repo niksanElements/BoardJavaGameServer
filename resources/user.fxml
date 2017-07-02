@@ -7,15 +7,20 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.shape.Circle?>
 
 <FlowPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="85.0" prefWidth="665.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.BoardGame.controller.UserController">
    <children>
-      <ImageView fitHeight="76.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
+      <Circle fx:id="indicator" fill="DODGERBLUE" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
+      <ImageView fx:id="imageView" fitHeight="76.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="file:/home/nikolay/worckspace/java/BoardJavaGameServer/resources/img/user.mng" />
+            <Image url="file:/home/nikolay/worckspace/java/BoardJavaGameServer/resources/img/user.png" />
          </image>
+         <FlowPane.margin>
+            <Insets left="20.0" />
+         </FlowPane.margin>
       </ImageView>
-      <Label text="User Information" textAlignment="CENTER" textFill="#790c0c">
+      <Label fx:id="userInfo" text="User Information" textAlignment="CENTER" textFill="#790c0c">
          <FlowPane.margin>
             <Insets left="10.0" />
          </FlowPane.margin>
@@ -25,12 +30,12 @@
             <Insets left="20.0" />
          </FlowPane.margin>
       </ChoiceBox>
-      <Button mnemonicParsing="false" onAction="#onPlay" text="PLAY">
+      <Button fx:id="play" mnemonicParsing="false" onAction="#onPlay" text="PLAY">
          <FlowPane.margin>
             <Insets left="20.0" />
          </FlowPane.margin>
       </Button>
-      <Button mnemonicParsing="false" text="EXIT">
+      <Button mnemonicParsing="false" onAction="#exit" text="EXIT">
          <FlowPane.margin>
             <Insets left="20.0" />
          </FlowPane.margin>

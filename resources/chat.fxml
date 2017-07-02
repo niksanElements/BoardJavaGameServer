@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -26,16 +24,10 @@
    <children>
       <VBox alignment="CENTER" prefHeight="439.0" prefWidth="335.0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
          <children>
-            <TextArea fx:id="chatMessages" prefHeight="416.0" prefWidth="335.0" promptText="chat messages" scrollTop="5.0">
+            <TextArea fx:id="chatMessages" blendMode="SRC_ATOP" prefHeight="416.0" prefWidth="335.0" promptText="chat messages" scrollTop="5.0">
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding>
-               <effect>
-                  <Glow />
-               </effect>
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
             </TextArea>
          </children>
       </VBox>
@@ -52,9 +44,9 @@
             </VBox>
          </children>
       </TilePane>
-      <VBox GridPane.columnSpan="2" GridPane.rowIndex="3">
+      <VBox alignment="CENTER" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
-            <TextArea fx:id="message" onKeyPressed="#send" prefHeight="79.0" prefWidth="335.0" promptText="message">
+            <TextArea fx:id="message" onKeyReleased="#send" prefHeight="79.0" prefWidth="335.0" promptText="message">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>

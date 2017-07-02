@@ -8,6 +8,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeType;
 import protocol.Message_Board_MoveFigures;
+import test.BoardGame.controller.UserController;
 
 public class Board_Clientside_Cell extends Polygon {
 
@@ -97,7 +98,6 @@ public class Board_Clientside_Cell extends Polygon {
                     colorCell(Color.RED,4, board.to);
                     to.add(board.to);
                     board.sendMessage(new Message_Board_MoveFigures(null, board.boardId, from, to));
-                    
                     colorCell(Color.BLACK,1, board.from);
                     colorCell(Color.BLACK,1, board.to);
                     board.from = null;

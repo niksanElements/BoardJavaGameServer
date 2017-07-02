@@ -19,11 +19,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import server.game_01.impl.Board;
 
 public class LoginController
 	implements Initializable {
@@ -83,7 +81,7 @@ public class LoginController
 		                    this.client.addPropertyChangeListener(this.home);
 		                    this.client.startConnection();
 		                    this.home.getChatController().setClient(client);
-		                    this.client.setChatController(this.home.getChatController());
+		                    this.client.setChat(this.home.getChatController());
 		                    isReady = true;
 		                }
 		            } catch (IOException ex) {
@@ -106,7 +104,9 @@ public class LoginController
 		        	   homeController.setVisible(true);
 		        	   this.stage.setFullScreen(true);
 		        	   this.home.getChatController().setUsername(username);
+		        	   this.home.getUser().setUsername(username);
 		        	   this.home.getUser().setClient(this.client);
+		        	   this.client.setUserControl(this.home.getUser());
 		           }
 		           else{
 		        	   	Alert message = new Alert(Alert.AlertType.INFORMATION);

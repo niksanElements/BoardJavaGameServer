@@ -256,7 +256,7 @@ public class NetServer implements IMessageSender, IMessageHandler {
                 // TODO
             }
             case CHAT_MESSAGE:{
-            	this.chatManager.handleMessage(message);
+            	this.gameManager.handleMessage(message);
             }
             break;
             default: {

@@ -5,9 +5,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import test.BoardGame.controller.BoardController;
 import test.BoardGame.controller.ChatController;
@@ -34,6 +36,7 @@ public class MainApp extends Application {
 		LoadView boardVew = Loader.load("board.fxml");
 		BorderPane boardRoot = (BorderPane)boardVew.getRoot();
 		this.home = (HomeController)boardVew.getController();
+		boardRoot.setStyle("-fx-control-inner-background: #030021;");
 		
 		LoadView chatView = Loader.load("chat.fxml");
 		GridPane chatRoot = (GridPane)chatView.getRoot();
@@ -43,7 +46,7 @@ public class MainApp extends Application {
 		FlowPane userRoot = (FlowPane)userView.getRoot();
 		this.user = (UserController)userView.getController();
 		
-		BorderPane.setAlignment(userRoot,Pos.CENTER_LEFT);
+		BorderPane.setAlignment(userRoot,Pos.CENTER);
 		
 		this.home.setChatControl(chat);
 		this.home.setUserControl(user);

@@ -2,6 +2,7 @@ package game.board;
 
 import apps.GameManager;
 import apps.NetServer;
+import protocol.ChatMessage;
 import protocol.Message;
 import protocol.Message_Board_EndGame;
 import protocol.Message_Board_EndTurn;
@@ -94,4 +95,15 @@ public class Board_Serverside extends Board {
     public synchronized void handleSurrender(Message_Board_Surrender message) {
         this.gameLogic.surrender(message);
     }
+
+	@Override
+	public void handleChatMessage(ChatMessage msg) {
+		for(String username:this.usernames){
+			if(msg.username != username){
+				ChatMessage message = new ChatMessage(username, this.boardId,msg.username ,msg.msg);
+				this.sendMessage(message);
+			}
+		}
+		
+	}
 }

@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.scene.paint.ImagePattern;
+import protocol.ChatMessage;
 import protocol.Message;
 import protocol.Message_Board_EndGame;
 import protocol.Message_Board_EndTurn;
@@ -419,13 +420,24 @@ public abstract class Board implements IMessageSender, IMessageHandler {
                 }
             }
             break;
+            case CHAT_MESSAGE: {
+                try {
+                    ChatMessage msg = (ChatMessage) message;
+                    this.handleChatMessage(msg);
+                } catch (ClassCastException ex) {
+                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            break;
             default: {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         }
     }
 
-    public abstract void handleGameStarted(Message_Board_GameStarted message);
+    public abstract void handleChatMessage(ChatMessage msg);
+
+	public abstract void handleGameStarted(Message_Board_GameStarted message);
 
     public abstract void handleGameSync(Message_Board_GameSync message);
 

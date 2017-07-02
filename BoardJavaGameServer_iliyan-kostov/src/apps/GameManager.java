@@ -8,9 +8,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import protocol.ChatMessage;
 import protocol.Message;
 import protocol.Message_Board;
 import protocol.Message_Board_EndGame;
+import protocol.Message_Board_EndTurn;
 import protocol.Message_Board_GameStarted;
 import protocol.Message_Board_Surrender;
 import protocol.Message_Lobby_NewGameRequest;
@@ -87,7 +90,9 @@ public class GameManager implements PropertyChangeListener, IMessageSender, IMes
         for (int i = 0; i < boardShape; i++) {
             msg.username = usernames[i];
             this.sendMessage(msg);
+            this.sendMessage(new Message_Board_EndTurn(usernames[i], this.nextBoardId, usernames[0], usernames[0]));
         }
+        
     }
 
     /**
@@ -187,6 +192,15 @@ public class GameManager implements PropertyChangeListener, IMessageSender, IMes
                 try {
                     Message_Lobby_NewGameRequest newGameRequest = (Message_Lobby_NewGameRequest) message;
                     this.queueAddUser(newGameRequest.username, newGameRequest.boardShape);
+                } catch (ClassCastException ex) {
+                    Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            break;
+            case CHAT_MESSAGE:{
+            	try {
+                    ChatMessage msg = (ChatMessage)message;
+                    this.boardsById.get(msg.idBoard).handleMessage(message);
                 } catch (ClassCastException ex) {
                     Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
                 }

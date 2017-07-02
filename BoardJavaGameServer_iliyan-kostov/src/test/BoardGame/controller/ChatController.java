@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import apps.NetClient;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -32,25 +33,47 @@ public class ChatController implements Initializable,PropertyChangeListener {
 	
 	@FXML
 	private TextArea message;
-
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		this.chatMessages.setScrollTop(Double.MAX_VALUE);
-		this.chatMessages.setDisable(true);
+		this.chatMessages.setWrapText(true);
+		this.chatMessages.setWrapText(true);
+		this.message.setWrapText(true);
+		this.chatMessages.setStyle(
+				"-fx-control-inner-background:#000000; "
+				+ "-fx-font-family: Consolas; "
+				+ "-fx-text-fill: #00ff00; "
+				+ "-fx-opacity: 2.0;"
+				+ "-fx-font-size: 14;"
+		);
+		this.chatMessages.setEffect(null);
+		this.chatMessages.editableProperty().set(false);
+		
+		this.message.setStyle(
+				"-fx-control-inner-background:#000000; "
+				+ "-fx-font-family: Consolas; "
+				+ "-fx-highlight-fill: #eeff00; "
+				+ "-fx-highlight-text-fill: #000000; "
+				+ "-fx-text-fill: #00ff00; "
+				+ "-fx-opacity: 2.0;"
+				+ "-fx-font-size: 14;"
+		);
 		this.message.setDisable(true);
 	}
 	
 	@FXML
-	protected void send(KeyEvent event){
+	protected void send(KeyEvent event){		
 		if(event.getCode() == KeyCode.ENTER){
 			String msg = this.message.getText();
 			this.message.clear();
+			this.message.positionCaret(0);
 			if(msg != null){
-				this.client.sendMessage(new ChatMessage(this.username, this.idBoard, msg));
-				this.chatMessages.appendText(this.username + ":\n");
+				this.client.sendMessage(new ChatMessage(this.username, this.idBoard,this.username ,msg));
+				this.chatMessages.appendText(this.username + ":  ");
 				this.chatMessages.appendText(msg);
 			}
+			
 		}
 	}
 
@@ -72,7 +95,7 @@ public class ChatController implements Initializable,PropertyChangeListener {
 
 	public void hendaleMessage(Message message2) {
 		ChatMessage msg = (ChatMessage)message2;
-		this.chatMessages.appendText(msg.username + ":\n");
+		this.chatMessages.appendText(msg.from + ":  ");
 		this.chatMessages.appendText(msg.msg);
 		
 	}
@@ -84,8 +107,14 @@ public class ChatController implements Initializable,PropertyChangeListener {
 	public void setClient(NetClient client) {
 		this.client = client;
 	}
+
+	public void setChatCommunication(boolean b) {
+		this.message.setDisable(!b);
+		
+	}
 	
-	
-	
+	public void setBoardId(int id){
+		this.idBoard = id;
+	}
 
 }

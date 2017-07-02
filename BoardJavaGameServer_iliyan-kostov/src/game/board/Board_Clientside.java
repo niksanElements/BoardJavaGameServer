@@ -9,9 +9,14 @@ import java.util.Iterator;
 import java.util.Map;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import protocol.ChatMessage;
 import protocol.Message;
 import protocol.Message_Board_EndGame;
 import protocol.Message_Board_EndTurn;
@@ -22,6 +27,8 @@ import protocol.Message_Board_RemoveFigures;
 import protocol.Message_Board_Surrender;
 import protocol.interfaces.IMessageHandler;
 import protocol.interfaces.IMessageSender;
+import test.BoardGame.controller.ChatController;
+import test.BoardGame.controller.UserController;
 
 public class Board_Clientside extends Board implements IMessageHandler, IMessageSender {
 
@@ -31,6 +38,10 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
     public BoardCoords from;
     public BoardCoords to;
     public ImageLoader imgLoader;
+    
+    public ChatController chat;
+    public UserController usercontrol;
+    
 
     public Board_Clientside(int boardShape, int boardId, String[] usernames, NetClient client) {
         super(boardShape, boardId, usernames);
@@ -192,6 +203,11 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
         // TODO
         System.out.println("[Client] Received Message_Board_EndTurn : " + message.playerTurnEnds);
         System.out.flush();
+        if(this.usercontrol.getUsername().equals(message.playerTurnStarts))
+        	this.usercontrol.isMyTurn(true);
+        else{
+        	this.usercontrol.isMyTurn(false);
+        }
         // =======================================================================================
         // =======================================================================================
     }
@@ -211,6 +227,59 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
             System.out.println("[Client]              " + psNew.playerName + " // " + psNew.gamesWon + " // " + psNew.gamesLost);
         }
         System.out.flush();
+        // изобразяване на резултата върху дъската:
+        {
+            GridPane endgameInfo = new GridPane();
+            // поздравление:
+            String infoStr = "Game finished!\nNew player stats after the game:\n";
+            Label labelInfo = new Label(infoStr);
+            labelInfo.setTextFill(Color.WHITE);
+
+            GridPane results = new GridPane();
+            // заглавие на таблицата:
+            {
+                Label headerName = new Label("Player name");
+                Label headerWon = new Label("Games won");
+                Label headerLost = new Label("Games lost");
+
+                headerName.setTextFill(Color.WHITE);
+                headerWon.setTextFill(Color.WHITE);
+                headerLost.setTextFill(Color.WHITE);
+
+                results.add(headerName, 0, 0);
+                results.add(headerWon, 1, 0);
+                results.add(headerLost, 2, 0);
+            }
+            // нови статистики на играчите:
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < message.playerStatsNew.length; i++) {
+                        Label playerName = new Label(message.playerStatsNew[i].playerName);
+                        Label gamesWon = new Label(String.valueOf(message.playerStatsNew[i].gamesWon));
+                        Label gamesLost = new Label(String.valueOf(message.playerStatsNew[i].gamesLost));
+
+                        playerName.setTextFill(Color.WHITE);
+                        gamesWon.setTextFill(Color.WHITE);
+                        gamesLost.setTextFill(Color.WHITE);
+
+                        results.add(playerName, 0, i + 1);
+                        results.add(gamesWon, 1, i + 1);
+                        results.add(gamesLost, 2, i + 1);
+                    }
+                    results.setHgap(10);
+                    results.setVgap(5);
+                    
+                    endgameInfo.add(labelInfo, 0, 0);
+                    endgameInfo.add(results, 0, 1);
+                    endgameInfo.setStyle("-fx-background-color: rgba(0, 100, 100, 0.9); -fx-background-radius: 5;");
+                    endgameInfo.setHgap(10);
+                    endgameInfo.setVgap(5);
+                    boardView.getChildren().add(endgameInfo);
+                    endgameInfo.setAlignment(Pos.CENTER);
+                }
+            });
+        }
         // =======================================================================================
         // =======================================================================================
     }
@@ -237,7 +306,29 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
 		return this.boardCells[coard.row][coard.col];
 		
 	}
-    
-    
+
+	@Override
+	public void handleChatMessage(ChatMessage msg) {
+		this.chat.hendaleMessage(msg);
+		
+	}
+
+	public ChatController getChat() {
+		return chat;
+	}
+
+	public void setChat(ChatController chat) {
+		this.chat = chat;
+	}
+
+	public UserController getUsercontrol() {
+		return usercontrol;
+	}
+
+	public void setUsercontrol(UserController usercontrol) {
+		this.usercontrol = usercontrol;
+	}
+	
+	
     
 }
