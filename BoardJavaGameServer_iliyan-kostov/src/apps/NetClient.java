@@ -178,6 +178,9 @@ public class NetClient implements IMessageSender, IMessageHandler, PropertyChang
             	this.board.handleMessage(message);
             }
             break;
+            case BOARD_GAMESYNC : {
+                this.board.handleMessage(message);
+            }
             default: {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }

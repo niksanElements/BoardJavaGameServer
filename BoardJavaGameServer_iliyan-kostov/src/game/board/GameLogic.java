@@ -4,7 +4,10 @@ import apps.GameManager;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import protocol.Message_Board_EndTurn;
+import protocol.Message_Board_GameSync;
 import protocol.Message_Board_MoveFigures;
 import protocol.Message_Board_Surrender;
 
@@ -12,10 +15,45 @@ public abstract class GameLogic {
 
     protected final Board_Serverside board;
     protected final GameManager gameManager;
+    protected int currentPlayerTime;    // time remaining for the current player's turn
+    public final static int PLAYERTIME = 10;    // default time for a player's turn
 
     public GameLogic(Board_Serverside board, GameManager gameManager) {
         this.board = board;
         this.gameManager = gameManager;
+        Runnable clock = new Runnable() {
+            @Override
+            public void run() {
+                while (!isGameFinished()) {
+                    while (!isGameFinished() && currentPlayerTime > 0) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        checkTime();
+                    }
+                }
+            }
+        };
+        new Thread(clock).start();  // not accessible from outside - safe from interrupts
+    }
+    
+
+    public synchronized void checkTime() {
+        String usnCurrent = this.board.usernames[this.board.currentPlayer];
+        //System.out.print("Server checking time: " + usnCurrent + " : " + this.currentPlayerTime + "...");
+        if (this.currentPlayerTime > 1) {
+            this.currentPlayerTime--;
+            for (int i = 0; i < this.board.usernames.length; i++) {
+                this.board.sendMessage(new Message_Board_GameSync(this.board.usernames[i], this.board.boardId, this.currentPlayerTime));
+            }
+            //System.out.println(" -> " + this.currentPlayerTime);
+        } else {
+            this.endTurn(new Message_Board_EndTurn(usnCurrent, this.board.boardId, usnCurrent, null));
+            //System.out.println(" turn ends!");
+        }
+        //System.out.flush();
     }
 
     /**
