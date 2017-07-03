@@ -95,7 +95,7 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
                         // ако полето е от дъската:
                         if (j <= 2 * i) {
                             this.boardViewFigures.getChildren().add(this.boardCells[i][j]);
-                            this.boardCells[i][j].setRotate((j % 2) * 180.);
+                            //this.boardCells[i][j].setRotate((j % 2) * 180.);
                             this.boardCells[i][j].setTranslateX((j - i) * Board_Clientside_Cell.SIDE_3 * 0.500);
                             this.boardCells[i][j].setTranslateY(i * Board_Clientside_Cell.SIDE_3 * 0.866);
                         }
