@@ -72,6 +72,10 @@ public class BoardController extends NetClient {
 		    break;
 		    case CHAT_MESSAGE:{
 		    }
+                    case BOARD_GAMESYNC : {
+                        this.board.handleMessage(message);
+                    }
+                    break;
 		    default: {
 		        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 		    }

@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -34,6 +35,10 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
 
     public final NetClient client;
     public final Group boardView;
+    public final GridPane boardViewContents; // the content of the boardView - as GridPane
+    public final Label boardViewPlayers;     // list of players in the game
+    public final Label boardViewCurrent;     // current player and time remaining: "Current turn: <username> : <time> ..."
+    public final Group boardViewFigures;     // figures (board)
     public final Board_Clientside_Cell[][] boardCells;
     public BoardCoords from;
     public BoardCoords to;
@@ -47,6 +52,21 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
         super(boardShape, boardId, usernames);
         this.client = client;
         this.boardView = new Group();
+        this.boardViewContents = new GridPane();
+        this.boardViewPlayers = new Label();
+        {
+            String players = "Players in the game:\n";
+            for (int i = 0; i < this.usernames.length; i++) {
+                players = players + this.usernames[i] + "\n";
+            }
+            this.boardViewPlayers.setText(players);
+        }
+        this.boardViewCurrent = new Label("Current turn: " + this.usernames[0] + " : " + String.valueOf(GameLogic.PLAYERTIME) + " ...");
+        this.boardViewPlayers.setTextFill(Color.WHITE);
+        this.boardViewCurrent.setTextFill(Color.WHITE);
+        this.boardViewPlayers.setStyle("-fx-background-color: rgba(0, 100, 100, 0.9); -fx-background-radius: 5;");
+        this.boardViewCurrent.setStyle("-fx-background-color: rgba(0, 100, 100, 0.9); -fx-background-radius: 5;");
+        this.boardViewFigures = new Group();
         this.boardCells = new Board_Clientside_Cell[this.boardSizeRows][this.boardSizeCols];
         this.imgLoader = new ImageLoader();
         for (int i = 0; i < this.boardSizeRows; i++) {
@@ -61,7 +81,7 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
         	case 2:{
         		for (int i = 0; i < this.boardSizeRows; i++) {
                     for (int j = 0; j < this.boardSizeCols; j++) {
-                        this.boardView.getChildren().add(this.boardCells[i][j]);
+                        this.boardViewFigures.getChildren().add(this.boardCells[i][j]);
                         //this.boardCells[i][j].setRotate(0.);
                         this.boardCells[i][j].setTranslateX(j * Board_Clientside_Cell.SIDE_4);
                         this.boardCells[i][j].setTranslateY(i * Board_Clientside_Cell.SIDE_4);
@@ -74,8 +94,8 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
                     for (int j = 0; j < this.boardSizeCols; j++) {
                         // ако полето е от дъската:
                         if (j <= 2 * i) {
-                            this.boardView.getChildren().add(this.boardCells[i][j]);
-                            this.boardCells[i][j].setRotate((j % 2) * 180.);
+                            this.boardViewFigures.getChildren().add(this.boardCells[i][j]);
+                            //this.boardCells[i][j].setRotate((j % 2) * 180.);
                             this.boardCells[i][j].setTranslateX((j - i) * Board_Clientside_Cell.SIDE_3 * 0.500);
                             this.boardCells[i][j].setTranslateY(i * Board_Clientside_Cell.SIDE_3 * 0.866);
                         }
@@ -86,7 +106,7 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
             case 4: {
                 for (int i = 0; i < this.boardSizeRows; i++) {
                     for (int j = 0; j < this.boardSizeCols; j++) {
-                        this.boardView.getChildren().add(this.boardCells[i][j]);
+                        this.boardViewFigures.getChildren().add(this.boardCells[i][j]);
                         //this.boardCells[i][j].setRotate(0.);
                         this.boardCells[i][j].setTranslateX(j * Board_Clientside_Cell.SIDE_4);
                         this.boardCells[i][j].setTranslateY(i * Board_Clientside_Cell.SIDE_4);
@@ -101,7 +121,7 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
                 // горна половина:
                 for (int i = 0; i < midRowId + 1; i++, rowLength++, dx--) {
                     for (int j = 0; j < rowLength; j++) {
-                        this.boardView.getChildren().add(this.boardCells[i][j]);
+                        this.boardViewFigures.getChildren().add(this.boardCells[i][j]);
                         //this.boardCells[i][j].setRotate(0.);
                         this.boardCells[i][j].setTranslateX((2 * j + dx) * Board_Clientside_Cell.SIDE_6 * 0.866);
                         this.boardCells[i][j].setTranslateY(i * Board_Clientside_Cell.SIDE_6 * 1.500);
@@ -113,7 +133,7 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
                 {
                     for (int i = midRowId + 1; i < this.boardSizeCols; i++, rowLength--, dx++) {
                         for (int j = 0; j < rowLength; j++) {
-                            this.boardView.getChildren().add(this.boardCells[i][j]);
+                            this.boardViewFigures.getChildren().add(this.boardCells[i][j]);
                             //this.boardCells[i][j].setRotate(0.);
                             this.boardCells[i][j].setTranslateX((2 * j + dx) * Board_Clientside_Cell.SIDE_6 * 0.866);
                             this.boardCells[i][j].setTranslateY(i * Board_Clientside_Cell.SIDE_6 * 1.500);
@@ -143,6 +163,14 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
                 }
             }
         }
+        this.boardViewContents.add(this.boardViewPlayers, 0, 0);
+        this.boardViewContents.add(this.boardViewCurrent, 0, 1);
+        this.boardViewContents.add(this.boardViewFigures, 0, 2);
+        this.boardViewContents.setVgap(10);
+        GridPane.setHalignment(this.boardViewPlayers, HPos.CENTER);
+        GridPane.setHalignment(this.boardViewCurrent, HPos.CENTER);
+        GridPane.setHalignment(this.boardViewFigures, HPos.CENTER);
+        this.boardView.getChildren().add(this.boardViewContents);
     }
 
     public Group getBoardView() {
@@ -156,7 +184,12 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
 
     @Override
     public synchronized void handleGameSync(Message_Board_GameSync message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                boardViewCurrent.setText("Current turn: " + usernames[currentPlayer] + " : " + String.valueOf(message.currentPlayerTime) + " ...");
+            }
+        });
     }
 
     @Override
@@ -203,11 +236,25 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
         // TODO
         System.out.println("[Client] Received Message_Board_EndTurn : " + message.playerTurnEnds);
         System.out.flush();
+        {
+            String playerTurnStarts = message.playerTurnStarts;
+            int i = 0;
+            while (!(this.usernames[i].equals(playerTurnStarts))) {
+                i++;
+            }
+            this.currentPlayer = i;
+        }
         if(this.usercontrol.getUsername().equals(message.playerTurnStarts))
         	this.usercontrol.isMyTurn(true);
         else{
         	this.usercontrol.isMyTurn(false);
         }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                boardViewCurrent.setText("Current turn: " + message.playerTurnStarts + " : " + String.valueOf(GameLogic.PLAYERTIME) + " ...");
+            }
+        });
         // =======================================================================================
         // =======================================================================================
     }
@@ -275,8 +322,9 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
                     endgameInfo.setStyle("-fx-background-color: rgba(0, 100, 100, 0.9); -fx-background-radius: 5;");
                     endgameInfo.setHgap(10);
                     endgameInfo.setVgap(5);
-                    boardView.getChildren().add(endgameInfo);
-                    endgameInfo.setAlignment(Pos.CENTER);
+                    boardViewContents.getChildren().remove(boardViewCurrent);
+                    boardViewContents.add(endgameInfo, 0, 1);
+                    GridPane.setHalignment(endgameInfo, HPos.CENTER);
                 }
             });
         }

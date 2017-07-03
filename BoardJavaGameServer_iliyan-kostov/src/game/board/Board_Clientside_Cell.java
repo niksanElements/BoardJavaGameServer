@@ -38,11 +38,16 @@ public class Board_Clientside_Cell extends Polygon {
     // дебелина на линиите от мрежата:
     public static final double GRID_WIDTH = 1;
 
-    // координати на върховете на триъгълника
-    public static final double[] COORDS_3
+    // координати на върховете на триъгълника - с връх нагоре:
+    public static final double[] COORDS_3_UP
             = {-Board_Clientside_Cell.SIDE_3 * 0.500, Board_Clientside_Cell.SIDE_3 * 0.433,
                 Board_Clientside_Cell.SIDE_3 * 0.500, Board_Clientside_Cell.SIDE_3 * 0.433,
                 0.000, -Board_Clientside_Cell.SIDE_3 * 0.433};
+    // координати на върховете на триъгълника - с връх надолу:
+    public static final double[] COORDS_3_DOWN
+            = {-Board_Clientside_Cell.SIDE_3 * 0.500, - Board_Clientside_Cell.SIDE_3 * 0.433,
+                Board_Clientside_Cell.SIDE_3 * 0.500, - Board_Clientside_Cell.SIDE_3 * 0.433,
+                0.000, Board_Clientside_Cell.SIDE_3 * 0.433};
     // координати на върховете на квадрата
     public static final double[] COORDS_4
             = {-Board_Clientside_Cell.SIDE_4 * 0.500, Board_Clientside_Cell.SIDE_4 * 0.500,
@@ -73,7 +78,7 @@ public class Board_Clientside_Cell extends Polygon {
 
     public Board_Clientside_Cell(int rowId, int colId, Board_Clientside board) {
         // генерира се полигон със съответната форма и координати на върховете:
-        super((board.boardShape == 3) ? (COORDS_3) : ((board.boardShape == 4) ? (COORDS_4) : (board.boardShape == 2) ? COORDS_2 : (COORDS_6)));
+        super((board.boardShape == 3) ? ((colId % 2 == 0) ? COORDS_3_UP : COORDS_3_DOWN) : ((board.boardShape == 4) ? (COORDS_4) : (board.boardShape == 2) ? COORDS_2 : (COORDS_6)));
         this.setFill(Board_Clientside_Cell.COLOR_BOARD);
         this.setStrokeType(StrokeType.INSIDE);
         this.setStrokeWidth(Board_Clientside_Cell.GRID_WIDTH);
