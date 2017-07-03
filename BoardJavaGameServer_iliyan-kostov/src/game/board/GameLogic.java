@@ -21,6 +21,7 @@ public abstract class GameLogic {
     public GameLogic(Board_Serverside board, GameManager gameManager) {
         this.board = board;
         this.gameManager = gameManager;
+        this.currentPlayerTime = GameLogic.PLAYERTIME;
         Runnable clock = new Runnable() {
             @Override
             public void run() {
@@ -205,6 +206,7 @@ public abstract class GameLogic {
                     // предаване на хода на следващия активен играч:
                     do {
                         this.board.currentPlayer = (this.board.currentPlayer + 1) % (this.board.usernames.length);
+                        this.currentPlayerTime = GameLogic.PLAYERTIME;
                     } while (this.board.activePlayers[this.board.currentPlayer] == false);
                     // изпращане на съобщението за край на ред до всички играчи в играта:
                     for (int i = 0; i < this.board.usernames.length; i++) {
