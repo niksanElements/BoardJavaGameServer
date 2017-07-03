@@ -26,14 +26,12 @@ public abstract class GameLogic {
             @Override
             public void run() {
                 while (!isGameFinished()) {
-                    while (!isGameFinished() && currentPlayerTime > 0) {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        checkTime();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    checkTime();
                 }
             }
         };

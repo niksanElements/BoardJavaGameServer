@@ -236,6 +236,14 @@ public class Board_Clientside extends Board implements IMessageHandler, IMessage
         // TODO
         System.out.println("[Client] Received Message_Board_EndTurn : " + message.playerTurnEnds);
         System.out.flush();
+        {
+            String playerTurnStarts = message.playerTurnStarts;
+            int i = 0;
+            while (!(this.usernames[i].equals(playerTurnStarts))) {
+                i++;
+            }
+            this.currentPlayer = i;
+        }
         if(this.usercontrol.getUsername().equals(message.playerTurnStarts))
         	this.usercontrol.isMyTurn(true);
         else{
