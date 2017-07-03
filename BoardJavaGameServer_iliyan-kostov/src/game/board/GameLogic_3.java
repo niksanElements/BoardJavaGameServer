@@ -14,13 +14,20 @@ public class GameLogic_3 extends GameLogic {
         int col1 = from.col;
         int row2 = to.row;
         int col2 = to.col;
-        if (row1 % 2 == 0) {
-            if (((row2 == row1) && (col2 == col1 - 1)) || ((row2 == row1) && (col2 == col1 + 1)) || ((row2 == col1 + 1) && (col2 == col1 + 1))) {
+
+        if (row2 == row1) {
+            // move - same row sideways:
+            if ((col2 == col1 + 1) || (col2 == col1 - 1)) {
                 return true;
             }
-        } else {
-            // row1 % 2 == 1
-            if (((row2 == row1 - 1) && (col2 == col1 - 1) || ((row2 == row1) && (col2 == col1 - 1))) || ((row2 == row1) && (col2 == col1 + 1))) {
+        } else if ((row2 == row1 + 1) && (col1 % 2 == 0)) {
+            // move down requested and triangle points up - can move down:
+            if (col2 == col1 + 1) {
+                return true;
+            }
+        } else if ((row2 == row1 - 1) && (col1 % 2 == 1)) {
+            // move up requested and triangle points down - can move up:
+            if (col2 == col1 - 1) {
                 return true;
             }
         }
